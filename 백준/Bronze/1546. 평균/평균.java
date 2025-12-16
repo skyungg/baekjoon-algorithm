@@ -17,10 +17,7 @@ public class Main{
         // 점수 조정하기
         double sum = 0;
         for(int i = 0; i < N; i++){
-            if(score[i] == M) sum += 100;
-            else{
-                sum += ((double)score[i]/M)*100;
-            }
+            sum += ((double)score[i]/M)*100;
         }
         
         // 결과 출력

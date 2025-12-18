@@ -8,12 +8,13 @@ public class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int N = Integer.parseInt(br.readLine());
 		
-		List<String> list = new ArrayList<>();
+		Set<String> set = new HashSet<>();;
 		
 		for(int i = 0; i < N; i++) {
-			String str = br.readLine();
-			if(!list.contains(str)) list.add(str); 
+			set.add(br.readLine());
 		}
+		
+		List<String> list = new ArrayList<>(set);
 		
 		Collections.sort(list, new Comparator<String>() {
 			@Override

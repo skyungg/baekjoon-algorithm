@@ -15,18 +15,15 @@ public class Main {
 			arr[i][1] = Integer.parseInt(st.nextToken());
 		}
 		
-		int [] result = new int[N];
+		StringBuilder sb = new StringBuilder();
 		for(int i = 0; i < N; i++) {
 			int count = 1;
 			for(int j = 0; j < N; j++) {
 				if(i == j) continue;
 				if(arr[i][0] < arr[j][0] && arr[i][1] < arr[j][1]) count++;
 			}
-			result[i] = count;
+			sb.append(count+" ");
 		}
-		
-		StringBuilder sb = new StringBuilder();
-		for(int n : result) sb.append(n+" ");
 		
 		System.out.println(sb);
 

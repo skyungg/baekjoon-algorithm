@@ -11,20 +11,20 @@ public class Main {
 		StringBuilder sb = new StringBuilder();
 		for(int t = 0; t < T; t++) {
 			String str = br.readLine();
-			Stack<Character> stack = new Stack<>();
+			int count = 0;
 			boolean flag = true;
 			
 			for(int i = 0; i < str.length(); i++) {
-				if(str.charAt(i) == '(') stack.push('(');
+				if(str.charAt(i) == '(') count++;
 				else {
-					if(stack.isEmpty()) {
+					if(count == 0) {
 						flag = false;
 						break;
-					}else stack.pop();
+					}else count--;
 				}
 			}
 			
-			if(flag && stack.isEmpty()) sb.append("YES\n");
+			if(flag && count == 0) sb.append("YES\n");
 			else sb.append("NO\n");
 		}
 		

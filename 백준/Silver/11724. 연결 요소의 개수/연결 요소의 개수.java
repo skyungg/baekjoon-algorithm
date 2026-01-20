@@ -27,30 +27,30 @@ public class Main {
 		}
 		
 		// dfs 풀이
-		int dfsCount = 0;
-		for(int i = 1; i <= N; i++) {
-			if(!visited[i]) {
-				dfs(i);
-				visited[i] = true;
-				dfsCount++;
-			}
-		}
-		
-		// dfs 정답 출력
-		System.out.println(dfsCount);
-		
-		// bfs 플이
-//		int bfsCount = 0;
+//		int dfsCount = 0;
 //		for(int i = 1; i <= N; i++) {
 //			if(!visited[i]) {
-//				bfs(i);
+//				dfs(i);
 //				visited[i] = true;
-//				bfsCount++;
+//				dfsCount++;
 //			}
 //		}
 //		
-//		// bfs 정답 출력
-//		System.out.println(bfsCount);
+//		// dfs 정답 출력
+//		System.out.println(dfsCount);
+		
+		// bfs 플이
+		int bfsCount = 0;
+		for(int i = 1; i <= N; i++) {
+			if(!visited[i]) {
+				bfs(i);
+				visited[i] = true;
+				bfsCount++;
+			}
+		}
+		
+		// bfs 정답 출력
+		System.out.println(bfsCount);
 
 	}
 	static void dfs(int num) {

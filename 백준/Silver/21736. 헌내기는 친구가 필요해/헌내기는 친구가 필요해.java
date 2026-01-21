@@ -6,6 +6,8 @@ public class Main {
 	static char [][] map;
 	static int [] dx = {-1, 0, 1, 0};
 	static int [] dy = {0, 1, 0, -1};
+    static int count = 0;
+    static boolean [][] visited;
 	public static void main(String[] args) throws IOException{
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -14,6 +16,7 @@ public class Main {
 		M = Integer.parseInt(st.nextToken());
 		
 		map = new char[N][M];
+        visited = new boolean[N][M];	// 방문 확인 배열
 		int sx = 0;	// 도연 초기위치
 		int sy = 0;
 		for(int i = 0; i < N; i++) {
@@ -28,44 +31,30 @@ public class Main {
 		}
 		
 		// bfs 탐색 돌리기
-		if(bfs(sx, sy) == 0) {
+        dfs(sx, sy);
+		if(count == 0) {
 			System.out.println("TT");
 		}else {
-			System.out.println(bfs(sx, sy));			
+			System.out.println(count);			
 		}
 
 	}
 	
-	static int bfs(int x, int y) {
-		Queue<int []> que = new LinkedList<>();
-		boolean [][] visited = new boolean[N][M];	// 방문 확인 배열
-		int count = 0;	// 만난 사람 수
-		
-		que.add(new int [] {x, y});
-		visited[x][y] = true;
-		
-		while(!que.isEmpty()) {
-			int [] curPoint = que.poll();
+	static void dfs(int x, int y) {
+        visited[x][y] = true;
+        if(map[x][y] == 'P') count++;
+
+		for(int i = 0; i < 4; i++) {
+			int tx = dx[i] + x;		// 현재 위치로 사방탐색 
+			int ty = dy[i] + y;
 			
-			for(int i = 0; i < 4; i++) {
-				int tx = dx[i] + curPoint[0];		// 현재 위치로 사방탐색 
-				int ty = dy[i] + curPoint[1];
-			
-				// 범위 탐색
-				if(isRange(tx, ty) && !visited[tx][ty]) {
-					if(map[tx][ty] != 'X') {
-						if(map[tx][ty] == 'P') count++;
-						
-						// 방문처리 및 확장
-						visited[tx][ty] = true;
-						que.add(new int[] {tx, ty});
-					}
-				}
+			// 범위 탐색
+			if(isRange(tx, ty) && !visited[tx][ty]) {
+				if(map[tx][ty] != 'X'){
+                    dfs(tx, ty);
+                } 
 			}
-			
 		}
-		
-		return count;
 	}
 	
 	static boolean isRange(int x, int y) {

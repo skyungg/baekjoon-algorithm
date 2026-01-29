@@ -7,9 +7,8 @@ import java.util.*;
  * */
 public class Main {
 	static int N, M, B;
-	static int [][] map;
-	static int height = 0;
-	static int time = Integer.MAX_VALUE;
+	static int [] block;
+	
 	public static void main(String[] args) throws IOException{
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -20,63 +19,67 @@ public class Main {
 		M = Integer.parseInt(st.nextToken());
 		B = Integer.parseInt(st.nextToken());
 		
+		int minH = Integer.MAX_VALUE;
 		int maxH = 0;
-		map = new int[N][M];
+		block = new int[267];
+		
 		for(int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
 			for(int j = 0; j < M; j++) {
-				map[i][j] = Integer.parseInt(st.nextToken());
-				maxH = Math.max(maxH, map[i][j]);
+				int h = Integer.parseInt(st.nextToken());
+				block[h]++;
+				minH = Math.min(minH, h);
+				maxH = Math.max(maxH, h);
 			}
 		}
 		
 		// 구현
-		
-		for(int i = 0; i <= maxH; i++) {
-			solve(i);
+		int height = 0;
+		int resultTime = Integer.MAX_VALUE;
+		for(int i = minH; i <= maxH; i++) {
+			int curTime = solve(i);
+			
+			if(curTime < resultTime) {
+				resultTime = curTime;
+				height = i;
+			}else if(curTime == resultTime) {
+				if(i > height) {
+					resultTime = curTime;
+					height = i;
+				}
+			}
 		}
 		
 		// 출력
-		System.out.println(time+" "+height);
+		System.out.println(resultTime+" "+height);
 	}
 	
-	static void solve(int standard) {
-		int store = B;		// 현재 인벤토리 수
-		int curTime = 0;
+	static int solve(int standard) {
+		int totalTime = 0;		// 총걸리는 시간
+		int curStore = B;		// 현재 인벤토리안에 저장된 	블록 수
 		
-		// 1. 블록 제거 ( +2)
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < M; j++) {
-				if(map[i][j] > standard) {
-					curTime += (map[i][j]-standard)*2;
-					store += (map[i][j] - standard);
-				}
+		for(int i = 0; i < 257; i++) {
+			int count = block[i];		// 현재 높이에 따른 영역 수
+			if(count == 0) continue;	// 해당하는 높이만큼 영역 존재X
+			
+			if(i < standard) {
+				int cnt = count * (standard - i);		// 필요 개수
+				
+				totalTime += cnt;		// 삽입 1초
+				curStore -= cnt;		// 필요한 개수만큼 차감
+			}else if( i > standard) {
+				int cnt = count *(i - standard);		// 제거해야하는 개수
+				
+				totalTime += cnt*2;		// 제거 2ch
+				curStore += cnt;		// 제거한 수만큼 증가
+				
 			}
 		}
 		
-		// 2. 블록 삽입 ( +1)
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < M; j++) {
-				if (map[i][j] < standard) {
-					int count = standard - map[i][j];
-					
-					if(store >= count) {
-						store -= count;
-						curTime += count;
-					}else return;
-				}
-			}
-		}
-		
-		if(curTime < time) {
-			time = curTime;
-			height = standard;
-		}else if(curTime == time) {
-			if(standard > height) {
-				time = curTime;
-				height = standard;
-			}
-		}
+		// 판단
+		if(curStore < 0) return Integer.MAX_VALUE;	// 해당 높이로 진행X
+		else return totalTime;	// 해당 높이로 진행 가능
+
 	}
 
 }

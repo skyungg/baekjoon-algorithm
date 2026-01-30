@@ -2,59 +2,49 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-
+	static class Point implements Comparable<Point>{
+		int idx;
+		int value;
+		
+		public Point(int idx, int value) {
+			this.idx = idx;
+			this.value = value;
+		}
+		
+		public int compareTo(Point p) {
+			return Integer.compare(this.value, p.value);
+		}
+		
+	}
+	
 	public static void main(String[] args) throws IOException{
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int N = Integer.parseInt(br.readLine());
-		int [] nums = new int[N];
-		int [] tmp = new int[N];
+		List<Point> list = new ArrayList<>();
 		
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		for(int i = 0; i < N; i++) {
-			nums[i] = Integer.parseInt(st.nextToken());
-			tmp[i] = nums[i];
+			list.add(new Point(i, Integer.parseInt(st.nextToken())));
 		}
-		
 		
 		// 오름차순 정렬
-		Arrays.sort(tmp);
-		int maxNum = tmp[0];
-		int count = 1;			// 중복 제거한 길이 
-		for(int i = 1; i < N; i++) {
-			if(tmp[i] > maxNum) {
-				maxNum = tmp[i];	// 배열 속 최댓값 갱신
-				count++;
-			}
-		}
-		
-		int [] result = new int[count];		// 중복 제거한 길이만큼 생성 -> 찐 중복제거한만큼 배열 만들기
-		result[0] = tmp[0];
-		maxNum = tmp[0];
-		count = 1;
-		for(int i = 1; i < N; i++) {
-			if(tmp[i] > maxNum) {
-				result[count++] = tmp[i];	// 중복제거한 값들을 저장
-				maxNum = tmp[i];
-			}
-		}
-		
-		// 기존 배열에서 좌표 압축 실행 -> 이분 탐색 통해 값 탐색
-		int left = 0;
-		int right = count-1;
+		Collections.sort(list);
+		int [] result = new int[N];		// 정답 저장할 배열
 		int index = 0;
-		StringBuilder sb = new StringBuilder();
-		while(index < N) {
-			int mid = (left+right)/2;
-			
-			if(result[mid] < nums[index]) left = mid+1;
-			else if(result[mid] > nums[index]) right = mid-1;
-			else {
-				left = 0;				// 포인터 초기화
-				right = count-1;
-				sb.append(mid+" ");
-				index++;
+		for(int i = 0; i < N; i++) {
+			Point p = list.get(i);
+			if(i > 0 && p.value == list.get(i-1).value) {
+				result[p.idx] = index - 1;
+			}else {
+				result[p.idx] = index++;
 			}
+		}
+		
+		// 출력
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < N; i++) {
+			sb.append(result[i]+" ");
 		}
 
 		// 출력

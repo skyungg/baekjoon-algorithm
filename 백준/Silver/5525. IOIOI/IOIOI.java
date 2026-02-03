@@ -8,30 +8,25 @@ public class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int N = Integer.parseInt(br.readLine());
 		int M = Integer.parseInt(br.readLine());	// S의 길이
-		String str = br.readLine();
+		char [] str = br.readLine().toCharArray();
 		
+		int count = 0;
 		int result = 0;
-		int length = 2*N+1;
-		for(int i = 0; i <= M-length; i++) {
-			String tmp = str.substring(i, i+length);
-
-			boolean flag = true;
-			for(int j = 0; j < length; j++) {
-				if(j%2 == 0) {	// 짝수 -> I
-					if(tmp.charAt(j) != 'I') {
-						flag = false;
-						break;
-					}
-				}else {
-					if(tmp.charAt(j) != 'O') {
-						flag = false;
-						break;
-					}
-				}
-			}
-			if(flag) result++;
-		}
 		
+		for(int i = 1; i < M-1; i++) {
+			if(str[i-1] == 'I' && str[i] == 'O' &&str[i+1] == 'I') {
+				count++;	// IOI인 경우
+				
+				if(count == N) {	// ioi 연속 세트가 N인 경우
+					count--;
+					result++;
+				}
+				i++;
+			}else {
+				count = 0;	// 연속 실패니 초기화
+			}
+		}
+
 		System.out.println(result);
 
 	}

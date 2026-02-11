@@ -51,9 +51,9 @@ public class Main {
 					map[th][tx][ty] = 1;	// 익은 처리
 					count--;	// 익었으니 개수 차감
 					que.add(new int [] {th, tx, ty, curPoint[3]+1});
-					result = Math.max(result, curPoint[3]+1);
 				}
 			}
+			result = curPoint[3]+1;
 		}
 		
 		if(count == 0) return result;

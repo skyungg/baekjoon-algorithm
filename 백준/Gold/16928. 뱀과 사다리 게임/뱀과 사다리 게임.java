@@ -12,25 +12,21 @@ public class Main {
 		}
 	}
 	
-	static HashMap<Integer, Integer> ladder = new HashMap<>();
-	static HashMap<Integer, Integer> snake = new HashMap<>();
+	static HashMap<Integer, Integer> info = new HashMap<>();
 	static int [] dice = {1, 2, 3, 4, 5, 6};
-	static int [] nums;
 	public static void main(String[] args) throws IOException{
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		int N = Integer.parseInt(st.nextToken());
 		int M = Integer.parseInt(st.nextToken());
-		nums = new int[101];
 		
 		// 사다리 위치
 		for(int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
 			int start = Integer.parseInt(st.nextToken());
 			int end = Integer.parseInt(st.nextToken());
-			nums[start] = 1;	// 사다리
-			ladder.put(start, end);
+			info.put(start, end);
 		}
 		
 		// 뱀 위치
@@ -38,8 +34,7 @@ public class Main {
 			st = new StringTokenizer(br.readLine());
 			int start = Integer.parseInt(st.nextToken());
 			int end = Integer.parseInt(st.nextToken());
-			nums[start] = 2;	// 뱀
-			snake.put(start, end);
+			info.put(start, end);
 		}
 		
 		// 구현 및 출력
@@ -66,10 +61,8 @@ public class Main {
 				int tx = p.point + dice[i];	// 주사위 이동
 				
 				if((tx >= 0 && tx <= 100) && !visited[tx]) {	// 범위 내 + 아직 방문 전
-					if(nums[tx] == 1) {		// 사다리인 경우
-						que.add(new Point(ladder.get(tx), p.cost + 1));
-					}else if(nums[tx] == 2) {	// 뱀인 경우
-						que.add(new Point(snake.get(tx), p.cost + 1));
+					if(info.containsKey(tx)) {
+						que.add(new Point(info.get(tx), p.cost + 1));
 					}else {
 						que.add(new Point(tx, p.cost+1));	// 아무것도 없는 경우 - > 그냥 이동
 					}

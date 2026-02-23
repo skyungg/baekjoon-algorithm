@@ -28,7 +28,6 @@ public class Main {
 			}
 			
 			long n1 = point[0] * 2;
-			long len = String.valueOf(A).length();
 			long n2 = point[0]*10+1;
 			
 			long [] arr = {n1, n2};

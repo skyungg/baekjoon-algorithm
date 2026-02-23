@@ -8,43 +8,23 @@ public class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		
-		long A = Integer.parseInt(st.nextToken());
-		long B = Integer.parseInt(st.nextToken());
+		int A = Integer.parseInt(st.nextToken());
+		int B = Integer.parseInt(st.nextToken());
 		
-		Deque<long[]> dq = new ArrayDeque<>();
-		int limit = (int)Math.pow(10, 9);
+		int result = 1;
 		
-		boolean [] visited = new boolean[limit+1];
+		// 둘 중 하나의 방법으로 만들어진게 확실할 때가 최적의 선택
+		while(A < B) {
+			if(B % 10 == 1) {	// A에 1을 추가해서 만든경우
+				B /= 10;
+			}else if(B%2 == 0) {	// A*2에 해당
+				B /= 2;
+			}else break;	// 둘 다 해당 안 됨
+			result++;
+		}	
 		
-		long result = Long.MAX_VALUE;
-		dq.add(new long[] {A, 0});
-
-		while(!dq.isEmpty()) {
-			long [] point = dq.poll();
-			
-			if(point[0] == B) {
-				result = point[1];
-				break;
-			}
-			
-			long n1 = point[0] * 2;
-			long n2 = point[0]*10+1;
-			
-			long [] arr = {n1, n2};
-			
-			for(int i = 0; i < 2; i++) {
-				long num = arr[i];
-				if(num > limit) continue;	// 범위 체크
-				if(visited[(int) num]) continue;	// 이미 방문
-				
-				visited[(int) num] = true;
-				dq.add(new long[] {num, point[1]+1});
-			}
-					
-		}
-		
-		if(result == Long.MAX_VALUE) System.out.println(-1);
-		else System.out.println(result+1);
+		if(B == A) System.out.println(result);
+		else System.out.println(-1);
 
 	}
 

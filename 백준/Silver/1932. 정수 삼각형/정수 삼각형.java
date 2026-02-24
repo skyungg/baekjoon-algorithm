@@ -16,21 +16,14 @@ public class Main {
 			}
 		}
 		
-		for(int i = 1; i < N; i++) {
-			for(int j = 0; j < i+1; j++) {
-				if(j == 0) map[i][j] += map[i-1][j];	// 맨 왼쪽
-				else if(j == i) map[i][j] += map[i-1][j-1];		// 맨 왼쪽
-				else map[i][j] += Math.max(map[i-1][j-1], map[i-1][j]);
+		for(int i = N-2; i >= 0; i--) {
+			for(int j = 0; j <= i; j++) {
+				map[i][j] += Math.max(map[i+1][j], map[i+1][j+1]);
 			}
 		}
 		
-		int result = 0;
-		for(int i = 0; i < N; i++) {
-			result = Math.max(map[N-1][i], result);
-		}
-		
 		// 정답
-		System.out.println(result);
+		System.out.println(map[0][0]);
 	}
 
 }

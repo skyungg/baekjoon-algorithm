@@ -18,12 +18,9 @@ public class Main {
 		
 		for(int i = 1; i < N; i++) {
 			for(int j = 0; j < i+1; j++) {
-				int left = 0;
-				int right = 0;
-				if(j-1 >= 0) left = map[i-1][j-1];
-				if(j <= i) right = map[i-1][j];
-				
-				map[i][j] += Math.max(left, right);
+				if(j == 0) map[i][j] += map[i-1][j];	// 맨 왼쪽
+				else if(j == i) map[i][j] += map[i-1][j-1];		// 맨 왼쪽
+				else map[i][j] += Math.max(map[i-1][j-1], map[i-1][j]);
 			}
 		}
 		

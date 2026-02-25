@@ -28,10 +28,7 @@ public class Main {
 			int x2 = Integer.parseInt(st.nextToken());
 			int y2 = Integer.parseInt(st.nextToken());
 			
-			int sum = 0;
-			for(int i = x1; i <= x2; i++) {
-				sum = map[x2][y2] - map[x2][y1-1] - map[x1-1][y2] + map[x1-1][y1-1];	
-			}
+			int sum = map[x2][y2] - map[x2][y1-1] - map[x1-1][y2] + map[x1-1][y1-1];	
 			
 			sb.append(sum+"\n");
 		}

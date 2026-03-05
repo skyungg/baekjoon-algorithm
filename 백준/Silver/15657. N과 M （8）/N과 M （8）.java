@@ -26,14 +26,14 @@ public class Main {
 		
 		// 재귀
 		sb = new StringBuilder();
-		recursion(0);
+		recursion(0, 0);
 		
 		// 출력
 		System.out.println(sb);
 	
 	}
 	
-	static void recursion(int depth) {
+	static void recursion(int depth, int idx) {
 		if(depth == M) {
 			for(int n : arr) {
 				sb.append(n+" ");
@@ -42,18 +42,9 @@ public class Main {
 			return;
 		}
 		
-		for(int i = 0; i < N; i++) {
-			if(depth == 0) {
-				arr[depth] = nums[i];
-				recursion(depth+1);
-			}else {
-				if(nums[i] >= arr[depth-1]) {
-					arr[depth] = nums[i];
-					recursion(depth+1);
-				}
-				
-			}
-			
+		for(int i = idx; i < N; i++) {
+			arr[depth] = nums[i];
+			recursion(depth+1, i);
 		}
 	}
 

@@ -5,7 +5,6 @@ public class Main {
 	static int N, M;
 	static int [] nums;
 	static int [] arr;
-	static boolean [] visited;
 	static StringBuilder sb;
 	public static void main(String[] args) throws IOException{
 		// TODO Auto-generated method stub
@@ -16,7 +15,6 @@ public class Main {
 		
 		nums = new int[N];
 		arr = new int[M];
-		visited = new boolean[N];
 		st = new StringTokenizer(br.readLine());
 		for(int i = 0; i < N; i++) {
 			nums[i] = Integer.parseInt(st.nextToken());
@@ -45,14 +43,13 @@ public class Main {
 			return;
 		}
 		
+		int preNum = -1;
 		for(int i = idx; i < N; i++) {
-			if(visited[i]) continue;
-			if(i > 0 && nums[i] == nums[i-1] && !visited[i-1]) continue;
-			
-			visited[i] = true;
+			if(preNum == nums[i]) continue;	// 같은 depth에서 같은 숫자 중복 방지
+
 			arr[depth] = nums[i];
+			preNum = arr[depth];
 			recursion(depth+1, i+1);
-			visited[i] = false;
 		}
 		
 	}

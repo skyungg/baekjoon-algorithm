@@ -2,21 +2,6 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-	static class Point implements Comparable<Point>{
-		int num;
-		int time;
-		
-		public Point(int num, int time) {
-			this.num = num;
-			this.time = time;
-		}
-		
-		@Override
-		public int compareTo(Point p) {
-			return this.time - p.time;		// time 작은순으로 정렬
-		}
-	}
-	
 	public static void main(String[] args) throws IOException{
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -25,39 +10,45 @@ public class Main {
 		int K = Integer.parseInt(st.nextToken());	// 동생
 		
 		// 구현 및 정답
-		System.out.println(bfs(N, K));
+		System.out.println(dijkstra(N, K));
 
 	}
 	
-	static int bfs(int start, int target) {
-		PriorityQueue<Point> pq = new PriorityQueue<>();
-		
-		pq.add(new Point(start, 0));
-		int result = 0;
-		
+	static int dijkstra(int start, int target) {
+		Deque<Integer> dq = new ArrayDeque<>();
+		dq.add(start);
+
 		int [] minTime = new int[100001];	// 해당 위치 방문 시, 최솟값 비교
 		Arrays.fill(minTime, Integer.MAX_VALUE);
 		minTime[start] = 0;	// 출발 위치는 0
 		
-		while(!pq.isEmpty()) {
-			Point point = pq.poll();
+		int result = 0;
+		
+		while(!dq.isEmpty()) {
+			int curPoint = dq.poll();
+			int curTime = minTime[curPoint];
 			
-			if(point.num == target) {
-				result = point.time;
+			if(curPoint == target) {
+				result = curTime;
 				break;
 			}
 			
-			int [] tmp = {point.num-1, point.num+1, point.num*2};
+			int nextPoint = curPoint-1;
+			if(checkRange(nextPoint) && (curTime+1 < minTime[nextPoint])) {
+				minTime[nextPoint] = curTime+1;
+				dq.addLast(nextPoint);
+			}
 			
-			for(int i = 0 ; i < 3; i++) {
-				if(!checkRange(tmp[i])) continue;	// 범위 벗어남
-				int curTime = point.time;
-				if(i != 2) curTime++;
-				
-				if(curTime < minTime[tmp[i]]) {
-					minTime[tmp[i]] = curTime;
-					pq.add(new Point(tmp[i], curTime));
-				}
+			nextPoint = curPoint+1;
+			if(checkRange(nextPoint) && (curTime+1 < minTime[nextPoint])) {
+				minTime[nextPoint] = curTime+1;
+				dq.addLast(nextPoint);
+			}
+			
+			nextPoint = curPoint*2;
+			if(checkRange(nextPoint) && (curTime < minTime[nextPoint])) {
+				minTime[nextPoint] = curTime;
+				dq.addFirst(nextPoint);
 			}
 		}
 		

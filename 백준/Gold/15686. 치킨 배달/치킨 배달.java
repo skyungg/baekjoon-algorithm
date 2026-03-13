@@ -6,8 +6,9 @@ public class Main {
 	static int [][] map;
 	static List<int []> chickenList = new ArrayList<>();
 	static List<int []> homeList = new ArrayList<>();
-	static int result = Integer.MAX_VALUE;
-	static int [] arr;
+	static int [][] dist;
+	static boolean [] visited;
+	static int minDist = Integer.MAX_VALUE;
 	public static void main(String[] args) throws IOException{
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -25,53 +26,58 @@ public class Main {
 			}
 		}
 		
-		if(M == chickenList.size()) {
-			solve(chickenList);
-		}else {
-			arr = new int[M];
-			recursion(0, 0);
+		// 각 집마다 - 치킨집별  치킨 거리 구하기
+		dist = new int[homeList.size()][chickenList.size()];
+		
+		for(int i = 0; i < homeList.size(); i++) {
+			int r1 = homeList.get(i)[0];
+			int c1 = homeList.get(i)[1];
+			
+			for(int j = 0; j < chickenList.size(); j++) {
+				int r2 = chickenList.get(j)[0];
+				int c2 = chickenList.get(j)[1];
+				dist[i][j] = Math.abs(r1-r2) + Math.abs(c1-c2);
+			}
 		}
 		
+		// M개 치킨집 뽑기
+		visited = new boolean[chickenList.size()];
+		recursion(0, 0);
+		
 		// 출력
-		System.out.println(result);
+		System.out.println(minDist);
 	}
 	
 	static void recursion(int depth, int start) {
 		if(depth == M) {
-			List<int []> tmp = new ArrayList<>();
-			for(int idx : arr) {
-				tmp.add(chickenList.get(idx));
-			}
-			solve(tmp);
+			minDist = Math.min(minDist, calDist());
 			
 			return;
 		}
 		
 		for(int i = start; i < chickenList.size(); i++) {
-			arr[depth] = i;
-			recursion(depth+1, i+1);
+			if(!visited[i]) {
+				visited[i] = true;
+				recursion(depth+1, i+1);
+				visited[i] = false;
+			}
 		}
 	}
 	
-	static void solve(List<int []> list) {
+	static int calDist() {
 		int totalDist = 0;
 
 		for(int i = 0; i < homeList.size(); i++) {
 			int curMinDist = Integer.MAX_VALUE;
-			int r1 = homeList.get(i)[0];
-			int c1 = homeList.get(i)[1];
-			
-			for(int j = 0; j < list.size(); j++) {
-				int r2 = list.get(j)[0];
-				int c2 = list.get(j)[1];
-				int dist = Math.abs(r1-r2) + Math.abs(c1-c2);
-				curMinDist = Math.min(curMinDist, dist);	// 치킨집 리스트 중 치킨 거리 가장 작은 것 추출
+			for(int j = 0; j < chickenList.size(); j++) {
+				if(visited[j]) {
+					curMinDist = Math.min(curMinDist, dist[i][j]);
+				}
 			}
-			totalDist+= curMinDist;
-
+			totalDist += curMinDist;
 		}
-
-		result = Math.min(result, totalDist);
+		
+		return totalDist;
 	}
 
 }

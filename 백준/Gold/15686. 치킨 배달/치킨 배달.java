@@ -3,7 +3,6 @@ import java.util.*;
 
 public class Main {
 	static int N,M;
-	static int [][] map;
 	static List<int []> chickenList = new ArrayList<>();
 	static List<int []> homeList = new ArrayList<>();
 	static int [][] dist;
@@ -16,13 +15,12 @@ public class Main {
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		
-		map = new int[N][N];
 		for(int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
 			for(int j = 0; j < N; j++) {
-				map[i][j] = Integer.parseInt(st.nextToken());
-				if(map[i][j] == 2) chickenList.add(new int[] {i, j});	// 치킨집 위치
-				else if(map[i][j] == 1) homeList.add(new int[] {i, j});	// 집 위치
+				int num = Integer.parseInt(st.nextToken());
+				if(num == 2) chickenList.add(new int[] {i, j});	// 치킨집 위치
+				else if(num == 1) homeList.add(new int[] {i, j});	// 집 위치
 			}
 		}
 		

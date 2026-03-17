@@ -52,6 +52,8 @@ public class Main {
 		while(!pq.isEmpty()) {
 			int [] point = pq.poll();
 			
+			if(point[1] > dist[point[0]]) continue;
+			
 			List<int []> tmp = graph.get(point[0]);
 			for(int i = 0; i < tmp.size(); i++) {
 				int [] cur = tmp.get(i);

@@ -9,6 +9,7 @@ import java.util.*;
 public class Main {
 	static int N, M;
 	static int [][] map;
+	static boolean [][] visited;
 	static int [] dx = {-1, 0, 1, 0};
 	static int [] dy = {0, 1, 0, -1};
 	static List<int []> virous = new ArrayList<>();
@@ -22,6 +23,8 @@ public class Main {
 		M = Integer.parseInt(st.nextToken());
 		
 		map = new int[N][M];
+		visited = new boolean[N][M];
+				
 		List<int []> empty = new ArrayList<>();
 		for(int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
@@ -62,13 +65,13 @@ public class Main {
 			arr[depth][0] = list.get(i)[0];
 			arr[depth][1] = list.get(i)[1];
 			
-			recursion(list, arr, depth+1, i+1);
+			recursion(list, arr, depth+1, idx+1);
 		}
 	}
 	
 	static void bfs() {
 		Queue<int []> que = new LinkedList<>(virous);
-		boolean [][] visited = new boolean[N][M];
+		
 		for(int [] arr : virous) {
 			visited[arr[0]][arr[1]] = true;
 		}
@@ -76,6 +79,8 @@ public class Main {
 		int cnt = count-3;		// 빈자리에 3개의 벽 설치했으니까
 		while(!que.isEmpty()) {
 			int [] point = que.poll();
+			
+			if(cnt <= maxArea) break;
 			
 			for(int i = 0; i < 4; i++) {
 				int tx = point[0] + dx[i];
@@ -90,6 +95,12 @@ public class Main {
 			}
 		}
 		
+		// visited 초기화
+		for(boolean [] v : visited) {
+			Arrays.fill(v, false);
+		}
+		
+		// 최댓값 갱신
 		maxArea = Math.max(maxArea, cnt);
 	}
 	

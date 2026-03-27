@@ -65,7 +65,7 @@ public class Main {
 			arr[depth][0] = list.get(i)[0];
 			arr[depth][1] = list.get(i)[1];
 			
-			recursion(list, arr, depth+1, idx+1);
+			recursion(list, arr, depth+1, i+1);
 		}
 	}
 	

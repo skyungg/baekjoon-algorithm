@@ -9,17 +9,13 @@ import java.util.*;
 public class Main {
 	static int N;
 	static int count = 0;
-	static boolean [] col;	// 열 체크
-	static boolean [] diag1;	// 오른쪽 아래 대각선
-	static boolean [] diag2;	// 왼쪽 아래 대각선
+	static int [] arr;
 	public static void main(String[] args) throws IOException{
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 		
-		col = new boolean[N];
-		diag1 = new boolean[2*N];
-		diag2 = new boolean[2*N];
+		arr = new int[N];
 		
 		dfs(0);
 		
@@ -28,32 +24,31 @@ public class Main {
 		
 	}
 	
-	static void dfs(int row) {
-		// 모든 행에 퀸 배치 완료
-		if(row == N) {
+	static void dfs(int depth) {
+		// 모든 퀸 배치 
+		if(depth == N) {
 			count++;
 			
 			return;
 		}
 		
 		// 현재 행에서 열 선택하기
-		for(int c = 0; c < N; c++) {
-			// 선택한 열이, 다른 퀸들에 의해 공격 당할 수 있는 위치
-			if(col[c] || diag1[row+c] || diag2[row - c + N]) continue;
+		for(int i = 0; i < N; i++) {
+			arr[depth] = i;		// 인덱스: 열, 값: 행
 			
-			// 배치
-			col[c] = true;
-			diag1[row+c] = true;
-			diag2[row-c+N] = true;
-			
-			dfs(row+1);	// 다음 행으로 이동
-			
-			// 백트래킹
-			col[c] = false;
-			diag1[row+c] = false;
-			diag2[row-c+N] = false;
+			//
+			if(checkQuene(depth)) {	// 퀸 배치 가능 -> 다음 퀸으로
+				dfs(depth+1);
+			}
+		}
+	}
+	
+	static boolean checkQuene(int col) {
+		for(int i = 0; i < col; i++) {
+			if(arr[col] == arr[i]) return false;	// 같은 열에 이미 퀸 존재 -> 만족 X	
+			else if(Math.abs(col-i) == Math.abs(arr[col] - arr[i])) return false;
 		}
 		
-		
+		return true;
 	}
 }

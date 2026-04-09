@@ -1,49 +1,37 @@
 import java.io.*;
-import java.util.*;
 
-public class Main {
+class Main {
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-	public static void main(String[] args) throws IOException{
-		// TODO Auto-generated method stub
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		String str = br.readLine();
-		String popStr = br.readLine();	// 폭발 문자열
-		
-		int len = popStr.length();
-		Stack<Character> stack = new Stack<>();
-		
-		for(int i = 0; i <  str.length(); i++) {
-			stack.push(str.charAt(i));
-			
-			if(stack.size() >= len) {
-				boolean flag = true;
-				
-				for(int j = 0; j < len; j++) {
-					if(stack.get(stack.size()-len+j) != popStr.charAt(j)) {
-						flag = false;
-						break;
-					}
-				}
-				
-				if(flag) {
-					for(int j = 0; j < len; j++) {
-						stack.pop();
-					}
-				}
-			}
-		}
-		
-		// 정답출력
-		if(stack.isEmpty()) {
-			System.out.println("FRULA");
-		}else {
-			StringBuilder sb = new StringBuilder();
-			while(!stack.isEmpty()) {
-				sb.append(stack.pop());
-			}
-			
-			System.out.println(sb.reverse());
-		}
-	}
+        char[] arr = br.readLine().toCharArray();
+        char[] popArr = br.readLine().toCharArray();
+        int tLen = popArr.length;
 
+        char[] stack = new char[arr.length];
+        int top = 0;
+
+        for (char c : arr) {
+            stack[top++] = c;
+
+            if (top >= tLen && c == popArr[tLen - 1]) {    // 끝 문자가 같을때만 비교하기
+                boolean flag = true;
+                for (int i = 0; i < tLen; i++) {
+                    if (stack[top - tLen + i] != popArr[i]) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag) {
+                    top -= tLen;
+                }
+            }
+        }
+
+        if (top == 0) {
+            System.out.println("FRULA");
+        } else {
+            System.out.println(new String(stack, 0, top));
+        }
+    }
 }

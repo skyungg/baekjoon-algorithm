@@ -26,7 +26,6 @@ public class Main {
 		}
 		
 		int count = 0;
-		int [][] area;
 		boolean [][] visited;
 		for(int h = 0; h < high; h++) {
 			visited = new boolean[N][N];

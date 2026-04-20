@@ -2,12 +2,13 @@ import java.io.*;
 import java.util.*;
 
 /*
- * 트리?
+ * 트리? -> 양방향 그래프에서 최단 거리 구하기
+ * 촌수 = 간선개수 ->  bfs 최단거리 문제
  * */
+
 public class Main {
 	static int N;
-	static List<List<Integer>> pGraph = new ArrayList<>();	// 부모 기준 그래프
-	static List<List<Integer>> cGraph = new ArrayList<>();	// 자식 기준 그래프
+	static List<List<Integer>> graph = new ArrayList<>();	// 부모 기준 그래프
 	public static void main(String[] args) throws IOException{
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -18,8 +19,7 @@ public class Main {
 		int b = Integer.parseInt(st.nextToken());
 		
 		for(int i = 0; i <= N; i++) {
-			pGraph.add(new ArrayList<>());
-			cGraph.add(new ArrayList<>());
+			graph.add(new ArrayList<>());
 		}
 		
 		int m = Integer.parseInt(br.readLine());
@@ -29,8 +29,8 @@ public class Main {
 			int x = Integer.parseInt(st.nextToken());
 			int y = Integer.parseInt(st.nextToken());
 			
-			pGraph.get(x).add(y);
-			cGraph.get(y).add(x);
+			graph.get(x).add(y);
+			graph.get(y).add(x);
 		}
 		
 		// 구현
@@ -41,40 +41,28 @@ public class Main {
 		
 	}
 	
-	static int bfs(int x, int y) {
+	static int bfs(int start, int target) {
 		Queue<int []> que = new LinkedList<>();
+		que.add(new int [] {start, 0});	// 현재 위치, 현재까지 촌수
 		
-		que.add(new int [] {x, 0});	// 현재 위치, 현재까지 촌수
 		boolean [] visited = new boolean[N+1];
-		visited[x] = true;
+		visited[start] = true;
 		
 		int count = -1;
 		while(!que.isEmpty()) {
 			int [] point = que.poll();
 			
-			int curX = point[0];
-			int cnt = point[1];
-			
-			if(curX == y) {
-				count = cnt;
+			if(point[0] == target) {
+				count = point[1];
 				break;
 			}
 			
-			// 자식 방향
-            for(int next : pGraph.get(curX)) {
-                if(!visited[next]) {
-                    visited[next] = true;
-                    que.add(new int[] {next, cnt+1});
-                }
-            }
-
-            // 부모 방향
-            for(int next : cGraph.get(curX)) {
-                if(!visited[next]) {
-                    visited[next] = true;
-                    que.add(new int[] {next, cnt+1});
-                }
-            }
+			for(int next : graph.get(point[0])) {
+				if(!visited[next]) {
+					visited[next] = true;
+					que.add(new int [] {next, point[1] + 1});
+				}
+			}
 		}
 		
 		return count;

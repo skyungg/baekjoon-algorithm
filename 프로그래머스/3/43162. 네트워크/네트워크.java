@@ -14,7 +14,6 @@ class Solution {
         
         for(int i = 0; i< n; i++){
             if(!visited[i]){
-                visited[i] = true;
                 dfs(i, n, computers);
                 answer++;
             }
@@ -23,13 +22,11 @@ class Solution {
     }
     
     void dfs(int start, int n, int [][] computers){
+        visited[start] = true;
         
         for(int j = 0; j < n; j++){
-            if(start != j){   // 자기자신 제외
-                if(computers[start][j] == 1 && !visited[j]){
-                    visited[j] = true;
-                    dfs(j, n, computers);
-                }
+            if(computers[start][j] == 1 && !visited[j]){
+                dfs(j, n, computers);
             }
         }
     }

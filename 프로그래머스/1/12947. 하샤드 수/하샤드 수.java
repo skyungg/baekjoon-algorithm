@@ -1,15 +1,12 @@
 class Solution {
     public boolean solution(int x) {
         boolean answer = true;
-        
+        String [] str = String.valueOf(x).split("");    // 문자열 배열로 전환
         int sum = 0;
-        int num = x;
-        while(x > 0){
-            sum += x%10;
-            x /= 10;
-        }
-
-        if(num % sum != 0) answer = false;
+        
+        for(String s : str) sum += Integer.parseInt(s);
+        
+        if(x%sum != 0) answer = false;     
         
         return answer;
     }

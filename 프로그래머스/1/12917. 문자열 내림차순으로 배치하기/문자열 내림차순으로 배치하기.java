@@ -5,7 +5,8 @@ class Solution {
         StringBuilder answer = new StringBuilder();
         String [] arr = s.split("");
         Arrays.sort(arr);
-        for(int i = s.length()-1; i >= 0; i--) answer.append(arr[i]);
-        return answer.toString();
+        for(int i = 0; i < s.length(); i++) answer.append(arr[i]);
+
+        return answer.reverse().toString();
     }
 }

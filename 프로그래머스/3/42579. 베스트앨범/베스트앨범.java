@@ -1,7 +1,5 @@
 import java.util.*;
 
-/*우선순위큐*/
-
 class Solution {
     public int[] solution(String[] genres, int[] plays) {
         List<Integer> list = new ArrayList<>();

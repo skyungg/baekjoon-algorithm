@@ -13,10 +13,11 @@ class Solution {
             int cnt = n-i;
             
             if(citations[i] >= cnt){
-                return cnt;
+                answer =  cnt;
+                break;
             }
         }
         
-        return 0;
+        return answer;
     }
 }

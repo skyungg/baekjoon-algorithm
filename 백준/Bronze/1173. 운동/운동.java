@@ -35,11 +35,7 @@ public class Main{
         
         
         // 출력
-        if(min != N){
-            System.out.println(-1);
-        }else{
-            System.out.println(totalMin);
-        }
+        System.out.println(totalMin);
 
     }
 }

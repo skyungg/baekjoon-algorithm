@@ -1,62 +1,64 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+/*
+    (1, 1)에서 출발하여 (N, M)의 위치로 이동할 때 지나야 하는 최소의 칸 수
+    -> bfs
+*/
 
-	public static void main(String[] args) throws IOException{
-		// TODO Auto-generated method stub
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		
-		int N = Integer.parseInt(st.nextToken());
-		int M = Integer.parseInt(st.nextToken());
-		
-		char [][] arr = new char[N][M];
-		
-		// 입력 받기
-		for(int i = 0; i < N; i++) {
-			String str = br.readLine();
-			for(int j = 0; j < M; j++) {
-				arr[i][j] = str.charAt(j);
-			}
-		}
-		
-		System.out.println(bfs(arr, N, M));
-	
-	}
-	
-	static int bfs(char [][] arr, int n, int m) {
-		int result = 0;
-		Queue<int []> que = new LinkedList<>();
-		boolean [][] visited = new boolean[n][m];
-		
-		que.add(new int [] {0, 0, 1});		// 초기 위치 및 누적칸 수
-		visited[0][0] = true;
-		
-		int [] dx = {-1, 0, 1, 0};
-		int [] dy = {0, 1, 0, -1};
-		
-		while(!que.isEmpty()) {
-			int [] point = que.poll();
-			
-			if(point[0] == n-1 && point[1] == m-1) {	// 목적지 도착
-				result = point[2];
-				break;
-			}
-			
-			for(int i = 0; i < 4; i++) {
-				int tx = point[0] + dx[i];
-				int ty = point[1] + dy[i];
-				
-				if(tx >= 0 && tx < n && ty >= 0 && ty < m) {
-					if(!visited[tx][ty] && arr[tx][ty] == '1') {
-						visited[tx][ty] = true;	// 방문처리
-						que.add(new int[] {tx, ty, point[2]+1});
-					}
-				}
-			}
-		}
-		
-		return result;
-	}
+public class Main{
+    public static void main(String [] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+        
+        int [][] map = new int[N][M];
+        
+        for(int i = 0; i < N; i++){
+            String str = br.readLine();
+            for(int j = 0; j < M; j++){
+                map[i][j] = str.charAt(j) - '0';
+            }
+        }
+        
+        // 미로 탐색하기
+        bfs(map, N, M, 0, 0);
+        
+        // 결과 출력
+        System.out.println(map[N-1][M-1]);    
+        
+    }
+    
+    static void bfs(int [][] map, int N, int M, int x, int y){
+        Queue<int []> que = new LinkedList<>();
+        que.add(new int [] {x, y});
+        
+        boolean [][] visited = new boolean[N][M];
+        visited[x][y] = true;
+        
+        
+        int [] dx = {-1, 0, 1, 0};
+        int [] dy = {0, 1, 0, -1};
+        
+        while(!que.isEmpty()){
+            int [] point = que.poll();
+            
+            if(point[0] == N-1 && point[1] == M-1) break;
+            
+            for(int i = 0; i < 4; i++){
+                int tx = point[0] + dx[i];
+                int ty = point[1] + dy[i];
+                
+                if(tx >= 0 && tx < N && ty >= 0 && ty < M){        // 범위 내 위치 만족
+                    if(!visited[tx][ty] && map[tx][ty] == 1){    // 방문 전 및 이동 가능 위치
+                        visited[tx][ty] = true;
+                        que.add(new int [] {tx, ty});
+                        map[tx][ty] = Math.max(map[tx][ty], map[point[0]][point[1]] + 1);
+                    }
+                }
+            }
+        }
+    }
 }

@@ -55,7 +55,7 @@ public class Main{
                     if(!visited[tx][ty] && map[tx][ty] == 1){    // 방문 전 및 이동 가능 위치
                         visited[tx][ty] = true;
                         que.add(new int [] {tx, ty});
-                        map[tx][ty] = Math.max(map[tx][ty], map[point[0]][point[1]] + 1);
+                        map[tx][ty] = map[point[0]][point[1]] + 1;
                     }
                 }
             }
